@@ -14,6 +14,12 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+
+        if($this->isGranted("IS_AUTHENTICATED_FULLY"))
+            {
+            return $this->redirectToRoute("main");
+            }
+
         // if ($this->getUsername()) {
         //     return $this->redirectToRoute('target_path');
         // }
