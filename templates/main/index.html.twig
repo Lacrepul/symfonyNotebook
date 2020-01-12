@@ -2,31 +2,34 @@
 {% block title %}Notebook{% endblock %}
 {% block body %}
    <div class="row">
-       <div class="col-10 offset-1">
-           <div class="card mb-3">
-               <div class="card-body bg-light">
-                   <div class="row">
-                       <div class="col">
-                           <div class="row">
-                               <div class="col-6 text-center">
-                                   0
-                                   <br>
-                                   <small>answers</small>
-                               </div>
-                               <div class="col-6 text-center">
-                                   0
-                                   <br>
-                                   <small>views</small>
-                               </div>
-                           </div>
-                       </div>
-                       <div class="col-10">
-                           <h5 class="card-title"><a href="#">[Notebook Title Placeholder]</a></h5>
-                           <p class="card-text text-muted small">whrited by [User Placeholder] [Post Time Placeholder]</p>
-                       </div>
-                   </div>
-               </div>
-           </div>
+       <div class="col-7 offset-2">
+            {% for note in notes %}
+                {% if note.username.getUsername == app.user.getUsername %}
+                    <div class="card mb-3">
+                        <div class="card-body bg-light">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="col-8 text-center">
+                                                {{ note.views}}
+                                                <br>
+                                                <small>views</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <h5 class="card-title"><a href="{{ path('app_note', { 'id':note.id })  }}"> {{ note.noteName }} </a></h5>
+                                    <p class="card-text text-muted small">date of creation: {{ note.created|date("m/d/Y  H:i") }} </p>
+                                </div>
+                                <div class="col-5">
+                                    <a href="{{ path('app_deleteNote', { 'id':note.id }) }}"> <button class="btn btn-outline-success my-2 my-sm-0"> DELETE </button> </a>
+                                    <a href="{{ path('app_update', { 'id':note.id }) }}"> <button class="btn btn-outline-success my-2 my-sm-0">  UPDATE </button> </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
        </div>
    </div>
 {% endblock %}

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200109121410 extends AbstractMigration
+final class Version20200111062104 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,9 +22,10 @@ final class Version20200109121410 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
-        $this->addSql('CREATE SEQUENCE username_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE username (id INT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_F85E0677E7927C74 ON username (email)');
+        $this->addSql('CREATE SEQUENCE note_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE TABLE note (id INT NOT NULL, username_id INT NOT NULL, note_name VARCHAR(255) NOT NULL, body TEXT NOT NULL, views INT DEFAULT 0 NOT NULL, created TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE INDEX IDX_CFBDFA14ED766068 ON note (username_id)');
+        $this->addSql('ALTER TABLE note ADD CONSTRAINT FK_CFBDFA14ED766068 FOREIGN KEY (username_id) REFERENCES username (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema) : void
@@ -33,7 +34,7 @@ final class Version20200109121410 extends AbstractMigration
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'postgresql', 'Migration can only be executed safely on \'postgresql\'.');
 
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('DROP SEQUENCE username_id_seq CASCADE');
-        $this->addSql('DROP TABLE username');
+        $this->addSql('DROP SEQUENCE note_id_seq CASCADE');
+        $this->addSql('DROP TABLE note');
     }
 }
